@@ -11,7 +11,7 @@ async function fetchCoordinates(city) {
 
 async function fetchWeather(lat, lon) {
   const response = await fetch(
-    `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKEY}&units=metric`,
+    `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${APIKEY}&units=metric`,
     { mode: "cors" }
   );
   const body = await response.json();
