@@ -1,16 +1,26 @@
 import "./styles/style.css";
 import { fetchCoordinates, fetchWeather } from "./app.js";
 
+const toggleUnits = document.querySelector("input[name=degrees]");
 const search = document.querySelector("input[name=search]");
 const searchResults = document.querySelector("#search-results");
 const current = document.querySelector("#current");
 const forecast = document.querySelector("#daily");
+let units = "metric";
 
 function clearNode(node) {
   while (node.firstChild) {
     node.firstChild.remove();
   }
 }
+
+toggleUnits.addEventListener("click", (e) => {
+  if (units == "metric") {
+    units = "imperial";
+  } else {
+    units = "metric";
+  }
+});
 
 search.addEventListener("keydown", (e) => {
   if (e.key == "Enter") {
@@ -31,19 +41,23 @@ async function searchCity(city) {
   }
 
   searchResults.style.display = "block";
-  
-	const options = document.querySelectorAll("option");
+	getWeather(cities);
+}
+
+function getWeather(cities) {
+  const options = document.querySelectorAll("option");
   const weather = {};
   const forecast = [];
-  
-	for (const option of options) {
+
+  for (const option of options) {
     option.addEventListener("click", async (e) => {
       const rawWeather = await fetchWeather(
         cities[Number(e.target.id)].lat,
-        cities[Number(e.target.id)].lon
+        cities[Number(e.target.id)].lon,
+        units
       );
-  
-			weather.temp = Math.round(rawWeather.current.temp);
+
+      weather.temp = Math.round(rawWeather.current.temp);
       weather.date = rawWeather.current.dt;
       weather.icon = rawWeather.current.weather[0].icon;
       weather.condition = rawWeather.current.weather[0].main;
@@ -52,7 +66,6 @@ async function searchCity(city) {
       forecast[0] = rawWeather.daily;
       clearNode(searchResults);
       search.classList.toggle("dropdown");
-      console.log(forecast);
       renderWeather(weather, forecast);
       searchResults.style.display = "none";
     });
@@ -79,13 +92,13 @@ async function renderWeather(weather, forecast) {
   } else if (weather.condition == "clear") {
     document.body.className = "clear";
   }
-  
-	date.textContent = new Date(weather.date * 1000).toString().slice(0, 10);
+
+  date.textContent = new Date(weather.date * 1000).toString().slice(0, 10);
   condition.src = `http://openweathermap.org/img/wn/${weather.icon}@2x.png`;
   temp.textContent = `${weather.temp}\u00B0`;
   description.textContent = weather.description;
-  
-	current.appendChild(date);
+
+  current.appendChild(date);
   current.appendChild(condition);
   current.appendChild(temp);
   current.appendChild(description);
@@ -95,8 +108,8 @@ async function renderWeather(weather, forecast) {
     const temp = document.createElement("p");
     const condition = document.createElement("img");
     const date = document.createElement("p");
-  
-		day.id = "day";
+
+    day.id = "day";
     date.textContent = new Date(forecast[0][key].dt * 1000)
       .toString()
       .slice(0, 3);

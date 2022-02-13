@@ -7,9 +7,15 @@
     <title>Weather App</title>
   </head>
   <body>
-		<input type="search" name="search">
-		<div id="search-results"></div>
-		<div id="current"></div>
-		<div id="daily"></div>
+    <label class="toggle" for="degrees"
+      ><span>F&deg</span>
+      <input class="toggle-input" name="degrees" type="checkbox" id="degrees" />
+      <div class="toggle-fill"></div>
+      <span> C&deg</span>
+    </label>
+    <input type="search" name="search" placeholder="Search for a location"/>
+    <div id="search-results"></div>
+    <div id="current"></div>
+    <div id="daily"></div>
   </body>
 </html>

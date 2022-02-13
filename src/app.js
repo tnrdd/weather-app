@@ -9,9 +9,9 @@ async function fetchCoordinates(city) {
 	return body
 }
 
-async function fetchWeather(lat, lon) {
+async function fetchWeather(lat, lon, units) {
   const response = await fetch(
-    `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${APIKEY}&units=metric`,
+    `http://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${APIKEY}&units=${units}`,
     { mode: "cors" }
   );
   const body = await response.json();
