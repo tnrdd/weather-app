@@ -3,6 +3,7 @@ import { fetchCoordinates, fetchWeather } from "./app.js";
 
 const toggleUnits = document.querySelector("input[name=degrees]");
 const search = document.querySelector("input[name=search]");
+const searchIcon = document.querySelector("#search-icon");
 const searchResults = document.querySelector("#search-results");
 const current = document.querySelector("#current");
 const forecast = document.querySelector("#daily");
@@ -14,24 +15,10 @@ function clearNode(node) {
   }
 }
 
-toggleUnits.addEventListener("click", (e) => {
-  if (units == "metric") {
-    units = "imperial";
-  } else {
-    units = "metric";
-  }
-});
-
-search.addEventListener("keydown", (e) => {
-  if (e.key == "Enter") {
-    clearNode(searchResults);
-    searchCity(e.target.value);
-  }
-});
-
 async function searchCity(city) {
   const cities = await fetchCoordinates(city);
-  search.classList.toggle("dropdown");
+  search.classList.add("dropdown");
+  searchIcon.classList.add("dropdown");
 
   for (const i in cities) {
     const option = document.createElement("option");
@@ -41,7 +28,7 @@ async function searchCity(city) {
   }
 
   searchResults.style.display = "block";
-	getWeather(cities);
+  getWeather(cities);
 }
 
 function getWeather(cities) {
@@ -65,7 +52,8 @@ function getWeather(cities) {
       weather.humidity = Math.round(rawWeather.current.humidity);
       forecast[0] = rawWeather.daily;
       clearNode(searchResults);
-      search.classList.toggle("dropdown");
+      search.classList.remove("dropdown");
+      searchIcon.classList.remove("dropdown");
       renderWeather(weather, forecast);
       searchResults.style.display = "none";
     });
@@ -89,7 +77,7 @@ async function renderWeather(weather, forecast) {
     document.body.className = "snow";
   } else if (weather.condition == "Mist") {
     document.body.className = "mist";
-  } else if (weather.condition == "clear") {
+  } else if (weather.condition == "Clear") {
     document.body.className = "clear";
   }
 
@@ -121,3 +109,36 @@ async function renderWeather(weather, forecast) {
     daily.appendChild(day);
   }
 }
+
+toggleUnits.addEventListener("click", (e) => {
+  if (units == "metric") {
+    units = "imperial";
+  } else {
+    units = "metric";
+  }
+});
+
+search.addEventListener("keydown", (e) => {
+  if (e.key == "Enter") {
+    clearNode(searchResults);
+    if (search.value) {
+      searchCity(e.target.value);
+    } else {
+      search.classList.remove("dropdown");
+      searchIcon.classList.remove("dropdown");
+      searchResults.style.display = "none";
+    }
+  }
+});
+
+searchIcon.addEventListener("click", (e) => {
+  e.preventDefault();
+  clearNode(searchResults);
+  if (search.value) {
+    searchCity(search.value);
+  } else {
+    search.classList.remove("dropdown");
+    searchIcon.classList.remove("dropdown");
+    searchResults.style.display = "none";
+  }
+});

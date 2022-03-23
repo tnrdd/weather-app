@@ -1,4 +1,4 @@
-const APIKEY = "b1786abd94cb58614f13917da152e15a";
+const APIKEY = "";
 
 async function fetchCoordinates(city) {
   const response = await fetch(
@@ -6,7 +6,7 @@ async function fetchCoordinates(city) {
     { mode: "cors" }
   );
   const body = await response.json();
-	return body
+  return body;
 }
 
 async function fetchWeather(lat, lon, units) {
@@ -15,7 +15,7 @@ async function fetchWeather(lat, lon, units) {
     { mode: "cors" }
   );
   const body = await response.json();
-	return body;
+  return body;
 }
 
 export { fetchCoordinates, fetchWeather };
