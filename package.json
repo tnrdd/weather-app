@@ -1,5 +1,5 @@
 {
-  "name": "webpack-demo",
+  "name": "weather-app",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -10,7 +10,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "css-loader": "^6.6.0",
     "html-webpack-plugin": "^5.5.0",
