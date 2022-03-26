@@ -10,6 +10,6 @@ An api key from OpenWeather is required, get it for free after signing up at <ht
 ```
 $ git clone https://github.com/tnrdd/weather-app.git
 $ cd weather-app
-$ npm istall
+$ npm install
 $ npm run build
 ```
